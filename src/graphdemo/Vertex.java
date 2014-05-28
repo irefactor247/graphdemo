@@ -11,10 +11,4 @@ public class Vertex extends GraphElement
     {
         super(copyFrom);
     }
-    
-    @Override
-    public String toString()
-    {
-        return this.name;
-    }
 }

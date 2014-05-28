@@ -31,19 +31,19 @@ public class MainFrame extends javax.swing.JFrame
         {
             default:
             case BFS:
-                this.BFSRadioButtonMenuItem.setSelected(true);
+                BFSRadioButtonMenuItem.setSelected(true);
                 break;
                 
             case DFS:
-                this.DFSRadioButtonMenuItem.setSelected(true);
+                DFSRadioButtonMenuItem.setSelected(true);
                 break;
                 
             case EDGE_BFS:
-                this.edgeBFSRadioButtomMenuItem.setSelected(true);
+                edgeBFSRadioButtomMenuItem.setSelected(true);
                 break;
                 
             case EDGE_DFS:
-                this.edgeDFSRadioButtomMenuItem.setSelected(true);
+                edgeDFSRadioButtomMenuItem.setSelected(true);
                 break;
         }
     }
@@ -54,15 +54,15 @@ public class MainFrame extends javax.swing.JFrame
         {
             default:
             case DIRECTED:
-                this.directedRadioButtonMenuItem.setSelected(true);
+                directedRadioButtonMenuItem.setSelected(true);
                 break;
                 
             case UNDIRECTED:
-                this.undirectedRadioButtonMenuItem.setSelected(true);
+                undirectedRadioButtonMenuItem.setSelected(true);
                 break;
                 
             case MIXED:
-                this.mixedRadioButtonMenuItem.setSelected(true);
+                mixedRadioButtonMenuItem.setSelected(true);
                 break;
         }
     }
@@ -104,14 +104,16 @@ public class MainFrame extends javax.swing.JFrame
             ", Weighted graph: " +
             SettingsManager.instance().getGraphIsWeighted() +
             ", Edge probability: " +
-            SettingsManager.instance().getEdgeProbability() +
+            SettingsManager.instance().getGraphEdgeProbability() +
+            ", Paralell edges limit: " +
+            SettingsManager.instance().getGraphParalellEdgesLimit() +
             ", Number of vertices: " +
-            SettingsManager.instance().getNumberOfVertices() +
+            SettingsManager.instance().getGraphNumberOfVertices() +
             ", Exploration algorithm: " +
             SettingsManager.instance().getExplorationAlgorithm() +
             ", Animation delay: " +
             SettingsManager.instance().getAnimationDelayMs() + " ms";
-        this.statusBarLabel.setText(message);
+        statusBarLabel.setText(message);
     }
     
     /**
@@ -141,15 +143,16 @@ public class MainFrame extends javax.swing.JFrame
         undirectedRadioButtonMenuItem = new javax.swing.JRadioButtonMenuItem();
         mixedRadioButtonMenuItem = new javax.swing.JRadioButtonMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+        weightedGraphCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
         graphLayoutMenu = new javax.swing.JMenu();
         circleLayoutRadioButtonMenuItem = new javax.swing.JRadioButtonMenuItem();
         frLayoutRadioButtonMenuItem = new javax.swing.JRadioButtonMenuItem();
         isomLayoutRadioButtonMenuItem = new javax.swing.JRadioButtonMenuItem();
         kkLayoutRadioButtonMenuItem = new javax.swing.JRadioButtonMenuItem();
         springLayoutRadioButtonMenuItem = new javax.swing.JRadioButtonMenuItem();
-        setNumberOfVerticesMenuItem = new javax.swing.JMenuItem();
-        setEdgeProbabilityMenuItem = new javax.swing.JMenuItem();
+        numberOfVerticesMenuItem = new javax.swing.JMenuItem();
+        edgeProbabilityMenuItem = new javax.swing.JMenuItem();
+        paralellEdgesLimitMenuItem = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         explorationAlgorithmMenu = new javax.swing.JMenu();
         DFSRadioButtonMenuItem = new javax.swing.JRadioButtonMenuItem();
@@ -157,7 +160,7 @@ public class MainFrame extends javax.swing.JFrame
         edgeDFSRadioButtomMenuItem = new javax.swing.JRadioButtonMenuItem();
         edgeBFSRadioButtomMenuItem = new javax.swing.JRadioButtonMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        setAnimationDelayMenuItem = new javax.swing.JMenuItem();
+        animationDelayMenuItem = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         resetToDefaultsMenuItem = new javax.swing.JMenuItem();
 
@@ -265,15 +268,15 @@ public class MainFrame extends javax.swing.JFrame
         graphTypeMenu.add(mixedRadioButtonMenuItem);
         graphTypeMenu.add(jSeparator3);
 
-        jCheckBoxMenuItem1.setText("Weighted");
-        jCheckBoxMenuItem1.addActionListener(new java.awt.event.ActionListener()
+        weightedGraphCheckBoxMenuItem.setText("Weighted");
+        weightedGraphCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jCheckBoxMenuItem1ActionPerformed(evt);
+                weightedGraphCheckBoxMenuItemActionPerformed(evt);
             }
         });
-        graphTypeMenu.add(jCheckBoxMenuItem1);
+        graphTypeMenu.add(weightedGraphCheckBoxMenuItem);
 
         settingsMenu.add(graphTypeMenu);
 
@@ -337,25 +340,35 @@ public class MainFrame extends javax.swing.JFrame
 
         settingsMenu.add(graphLayoutMenu);
 
-        setNumberOfVerticesMenuItem.setText("Set number of vertices");
-        setNumberOfVerticesMenuItem.addActionListener(new java.awt.event.ActionListener()
+        numberOfVerticesMenuItem.setText("Number of vertices");
+        numberOfVerticesMenuItem.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                setNumberOfVerticesMenuItemActionPerformed(evt);
+                numberOfVerticesMenuItemActionPerformed(evt);
             }
         });
-        settingsMenu.add(setNumberOfVerticesMenuItem);
+        settingsMenu.add(numberOfVerticesMenuItem);
 
-        setEdgeProbabilityMenuItem.setText("Set edge probability");
-        setEdgeProbabilityMenuItem.addActionListener(new java.awt.event.ActionListener()
+        edgeProbabilityMenuItem.setText("Edge probability");
+        edgeProbabilityMenuItem.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                setEdgeProbabilityMenuItemActionPerformed(evt);
+                edgeProbabilityMenuItemActionPerformed(evt);
             }
         });
-        settingsMenu.add(setEdgeProbabilityMenuItem);
+        settingsMenu.add(edgeProbabilityMenuItem);
+
+        paralellEdgesLimitMenuItem.setText("Paralell edges limit");
+        paralellEdgesLimitMenuItem.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                paralellEdgesLimitMenuItemActionPerformed(evt);
+            }
+        });
+        settingsMenu.add(paralellEdgesLimitMenuItem);
         settingsMenu.add(jSeparator4);
 
         explorationAlgorithmMenu.setText("Exploration algorithm");
@@ -408,15 +421,15 @@ public class MainFrame extends javax.swing.JFrame
         settingsMenu.add(explorationAlgorithmMenu);
         settingsMenu.add(jSeparator1);
 
-        setAnimationDelayMenuItem.setText("Set animation delay");
-        setAnimationDelayMenuItem.addActionListener(new java.awt.event.ActionListener()
+        animationDelayMenuItem.setText("Animation delay");
+        animationDelayMenuItem.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                setAnimationDelayMenuItemActionPerformed(evt);
+                animationDelayMenuItemActionPerformed(evt);
             }
         });
-        settingsMenu.add(setAnimationDelayMenuItem);
+        settingsMenu.add(animationDelayMenuItem);
         settingsMenu.add(jSeparator2);
 
         resetToDefaultsMenuItem.setText("Reset to defaults");
@@ -456,25 +469,25 @@ public class MainFrame extends javax.swing.JFrame
 
     private void DFSRadioButtonMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_DFSRadioButtonMenuItemActionPerformed
     {//GEN-HEADEREND:event_DFSRadioButtonMenuItemActionPerformed
-        SettingsManager.instance().setExplorationAlgorithm(SettingsManager.ExplorationAlgorithm.DFS);
+        SettingsManager.instance().setExplorationAlgorithm(ExplorationAlgorithm.DFS);
         updateStatusBar();
     }//GEN-LAST:event_DFSRadioButtonMenuItemActionPerformed
 
     private void BFSRadioButtonMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_BFSRadioButtonMenuItemActionPerformed
     {//GEN-HEADEREND:event_BFSRadioButtonMenuItemActionPerformed
-        SettingsManager.instance().setExplorationAlgorithm(SettingsManager.ExplorationAlgorithm.BFS);
+        SettingsManager.instance().setExplorationAlgorithm(ExplorationAlgorithm.BFS);
         updateStatusBar();
     }//GEN-LAST:event_BFSRadioButtonMenuItemActionPerformed
 
     private void edgeDFSRadioButtomMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_edgeDFSRadioButtomMenuItemActionPerformed
     {//GEN-HEADEREND:event_edgeDFSRadioButtomMenuItemActionPerformed
-        SettingsManager.instance().setExplorationAlgorithm(SettingsManager.ExplorationAlgorithm.EDGE_DFS);
+        SettingsManager.instance().setExplorationAlgorithm(ExplorationAlgorithm.EDGE_DFS);
         updateStatusBar();
     }//GEN-LAST:event_edgeDFSRadioButtomMenuItemActionPerformed
 
     private void edgeBFSRadioButtomMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_edgeBFSRadioButtomMenuItemActionPerformed
     {//GEN-HEADEREND:event_edgeBFSRadioButtomMenuItemActionPerformed
-        SettingsManager.instance().setExplorationAlgorithm(SettingsManager.ExplorationAlgorithm.EDGE_BFS);
+        SettingsManager.instance().setExplorationAlgorithm(ExplorationAlgorithm.EDGE_BFS);
         updateStatusBar();
     }//GEN-LAST:event_edgeBFSRadioButtomMenuItemActionPerformed
 
@@ -487,8 +500,8 @@ public class MainFrame extends javax.swing.JFrame
         updateStatusBar();
     }//GEN-LAST:event_resetToDefaultsMenuItemActionPerformed
 
-    private void setAnimationDelayMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_setAnimationDelayMenuItemActionPerformed
-    {//GEN-HEADEREND:event_setAnimationDelayMenuItemActionPerformed
+    private void animationDelayMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_animationDelayMenuItemActionPerformed
+    {//GEN-HEADEREND:event_animationDelayMenuItemActionPerformed
         String result = (String)JOptionPane.showInputDialog(
             this,
             "Please enter a value in range: " +
@@ -519,7 +532,7 @@ public class MainFrame extends javax.swing.JFrame
             }
         }
         updateStatusBar();
-    }//GEN-LAST:event_setAnimationDelayMenuItemActionPerformed
+    }//GEN-LAST:event_animationDelayMenuItemActionPerformed
 
     private void newGraphMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_newGraphMenuItemActionPerformed
     {//GEN-HEADEREND:event_newGraphMenuItemActionPerformed
@@ -533,10 +546,10 @@ public class MainFrame extends javax.swing.JFrame
         vv.setGraphMouse(graphMouse);
         vv.setSize(panel.getSize());
         vv.setBackground(Color.blue);
-        this.panel.removeAll();
-        this.panel.setLayout(new BorderLayout());
-        this.panel.add(vv);
-        this.panel.addComponentListener(new ComponentListener()
+        panel.removeAll();
+        panel.setLayout(new BorderLayout());
+        panel.add(vv);
+        panel.addComponentListener(new ComponentListener()
         {
             @Override
             public void componentResized(ComponentEvent ce)
@@ -555,76 +568,76 @@ public class MainFrame extends javax.swing.JFrame
 
     private void circleLayoutRadioButtonMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_circleLayoutRadioButtonMenuItemActionPerformed
     {//GEN-HEADEREND:event_circleLayoutRadioButtonMenuItemActionPerformed
-        SettingsManager.instance().setGraphLayout(SettingsManager.GraphLayout.CIRCLE);
+        SettingsManager.instance().setGraphLayout(GraphLayout.CIRCLE);
         updateStatusBar();
     }//GEN-LAST:event_circleLayoutRadioButtonMenuItemActionPerformed
 
     private void frLayoutRadioButtonMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_frLayoutRadioButtonMenuItemActionPerformed
     {//GEN-HEADEREND:event_frLayoutRadioButtonMenuItemActionPerformed
-        SettingsManager.instance().setGraphLayout(SettingsManager.GraphLayout.FR);
+        SettingsManager.instance().setGraphLayout(GraphLayout.FR);
         updateStatusBar();
     }//GEN-LAST:event_frLayoutRadioButtonMenuItemActionPerformed
 
     private void isomLayoutRadioButtonMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_isomLayoutRadioButtonMenuItemActionPerformed
     {//GEN-HEADEREND:event_isomLayoutRadioButtonMenuItemActionPerformed
-        SettingsManager.instance().setGraphLayout(SettingsManager.GraphLayout.ISOM);
+        SettingsManager.instance().setGraphLayout(GraphLayout.ISOM);
         updateStatusBar();
     }//GEN-LAST:event_isomLayoutRadioButtonMenuItemActionPerformed
 
     private void kkLayoutRadioButtonMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_kkLayoutRadioButtonMenuItemActionPerformed
     {//GEN-HEADEREND:event_kkLayoutRadioButtonMenuItemActionPerformed
-        SettingsManager.instance().setGraphLayout(SettingsManager.GraphLayout.KK);
+        SettingsManager.instance().setGraphLayout(GraphLayout.KK);
         updateStatusBar();
     }//GEN-LAST:event_kkLayoutRadioButtonMenuItemActionPerformed
 
     private void springLayoutRadioButtonMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_springLayoutRadioButtonMenuItemActionPerformed
     {//GEN-HEADEREND:event_springLayoutRadioButtonMenuItemActionPerformed
-        SettingsManager.instance().setGraphLayout(SettingsManager.GraphLayout.SPRING);
+        SettingsManager.instance().setGraphLayout(GraphLayout.SPRING);
         updateStatusBar();
     }//GEN-LAST:event_springLayoutRadioButtonMenuItemActionPerformed
 
     private void directedRadioButtonMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_directedRadioButtonMenuItemActionPerformed
     {//GEN-HEADEREND:event_directedRadioButtonMenuItemActionPerformed
-        SettingsManager.instance().setGraphType(SettingsManager.GraphType.DIRECTED);
+        SettingsManager.instance().setGraphType(GraphType.DIRECTED);
         updateStatusBar();
     }//GEN-LAST:event_directedRadioButtonMenuItemActionPerformed
 
     private void undirectedRadioButtonMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_undirectedRadioButtonMenuItemActionPerformed
     {//GEN-HEADEREND:event_undirectedRadioButtonMenuItemActionPerformed
-        SettingsManager.instance().setGraphType(SettingsManager.GraphType.UNDIRECTED);
+        SettingsManager.instance().setGraphType(GraphType.UNDIRECTED);
         updateStatusBar();
     }//GEN-LAST:event_undirectedRadioButtonMenuItemActionPerformed
 
     private void mixedRadioButtonMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_mixedRadioButtonMenuItemActionPerformed
     {//GEN-HEADEREND:event_mixedRadioButtonMenuItemActionPerformed
-        SettingsManager.instance().setGraphType(SettingsManager.GraphType.MIXED);
+        SettingsManager.instance().setGraphType(GraphType.MIXED);
         updateStatusBar();
     }//GEN-LAST:event_mixedRadioButtonMenuItemActionPerformed
 
-    private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
-    {//GEN-HEADEREND:event_jCheckBoxMenuItem1ActionPerformed
-        SettingsManager.instance().setGraphIsWeighted(this.jCheckBoxMenuItem1.isSelected());
+    private void weightedGraphCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_weightedGraphCheckBoxMenuItemActionPerformed
+    {//GEN-HEADEREND:event_weightedGraphCheckBoxMenuItemActionPerformed
+        SettingsManager.instance().setGraphIsWeighted(weightedGraphCheckBoxMenuItem.isSelected());
         updateStatusBar();
-    }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
+    }//GEN-LAST:event_weightedGraphCheckBoxMenuItemActionPerformed
 
-    private void setEdgeProbabilityMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_setEdgeProbabilityMenuItemActionPerformed
-    {//GEN-HEADEREND:event_setEdgeProbabilityMenuItemActionPerformed
+    private void edgeProbabilityMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_edgeProbabilityMenuItemActionPerformed
+    {//GEN-HEADEREND:event_edgeProbabilityMenuItemActionPerformed
         String result = (String)JOptionPane.showInputDialog(
             this,
             "Please enter a value in range: " +
-                SettingsManager.MIN_EDGE_PROBABILITY + "-" +
-                SettingsManager.MAX_EDGE_PROBABILITY,
+                SettingsManager.MIN_GRAPH_EDGE_PROBABILITY + "-" +
+                SettingsManager.MAX_GRAPH_EDGE_PROBABILITY,
             "Set edge probability",
             JOptionPane.INFORMATION_MESSAGE,
             null,
             null,
-            SettingsManager.instance().getEdgeProbability());
+            SettingsManager.instance().getGraphEdgeProbability());
         // Null means Cancel has been pressed
         if (result != null)
         {
             try
             {
-                SettingsManager.instance().setEdgeProbability(Double.parseDouble(result));
+                SettingsManager.instance().setGraphEdgeProbability(Double.parseDouble(result));
             }
             catch (NumberFormatException ex)
             {
@@ -632,33 +645,33 @@ public class MainFrame extends javax.swing.JFrame
                     null,
                     "\"" + result + "\"" + " is not a valid probability value." +
                     " Using default value of " +
-                    SettingsManager.DEFAULT_EDGE_PROBABILITY + " instead.",
+                    SettingsManager.DEFAULT_GRAPH_EDGE_PROBABILITY + " instead.",
                     "Invalid value.",
                     JOptionPane.ERROR_MESSAGE); 
-                SettingsManager.instance().setEdgeProbability(SettingsManager.DEFAULT_EDGE_PROBABILITY);
+                SettingsManager.instance().setGraphEdgeProbability(SettingsManager.DEFAULT_GRAPH_EDGE_PROBABILITY);
             }
         }
         updateStatusBar();
-    }//GEN-LAST:event_setEdgeProbabilityMenuItemActionPerformed
+    }//GEN-LAST:event_edgeProbabilityMenuItemActionPerformed
 
-    private void setNumberOfVerticesMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_setNumberOfVerticesMenuItemActionPerformed
-    {//GEN-HEADEREND:event_setNumberOfVerticesMenuItemActionPerformed
+    private void numberOfVerticesMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_numberOfVerticesMenuItemActionPerformed
+    {//GEN-HEADEREND:event_numberOfVerticesMenuItemActionPerformed
         String result = (String)JOptionPane.showInputDialog(
             this,
             "Please enter a value in range: " +
-                SettingsManager.MIN_NUMBER_OF_VERTICES + "-" +
-                SettingsManager.MAX_NUMBER_OF_VERTICES,
+                SettingsManager.MIN_GRAPH_NUMBER_OF_VERTICES + "-" +
+                SettingsManager.MAX_GRAPH_NUMBER_OF_VERTICES,
             "Set number of vertices",
             JOptionPane.INFORMATION_MESSAGE,
             null,
             null,
-            SettingsManager.instance().getNumberOfVertices());
+            SettingsManager.instance().getGraphNumberOfVertices());
         // Null means Cancel has been pressed
         if (result != null)
         {
             try
             {
-                SettingsManager.instance().setNumberOfVertices(Integer.parseInt(result));
+                SettingsManager.instance().setGraphNumberOfVertices(Integer.parseInt(result));
             }
             catch (NumberFormatException ex)
             {
@@ -666,14 +679,49 @@ public class MainFrame extends javax.swing.JFrame
                     null,
                     "\"" + result + "\"" + " is not a valid number of vertices." +
                     " Using default value of " +
-                    SettingsManager.DEFAULT_NUMBER_OF_VERTICES + " instead.",
+                    SettingsManager.DEFAULT_GRAPH_NUMBER_OF_VERTICES + " instead.",
                     "Invalid value.",
                     JOptionPane.ERROR_MESSAGE); 
-                SettingsManager.instance().setNumberOfVertices(SettingsManager.DEFAULT_NUMBER_OF_VERTICES);
+                SettingsManager.instance().setGraphNumberOfVertices(SettingsManager.DEFAULT_GRAPH_NUMBER_OF_VERTICES);
             }
         }
         updateStatusBar();
-    }//GEN-LAST:event_setNumberOfVerticesMenuItemActionPerformed
+    }//GEN-LAST:event_numberOfVerticesMenuItemActionPerformed
+
+    private void paralellEdgesLimitMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_paralellEdgesLimitMenuItemActionPerformed
+    {//GEN-HEADEREND:event_paralellEdgesLimitMenuItemActionPerformed
+        String result = (String)JOptionPane.showInputDialog(
+            this,
+            "Please enter a value in range: " +
+                SettingsManager.MIN_GRAPH_PARALELL_EDGES_LIMIT + "-" +
+                SettingsManager.MAX_GRAPH_PARALELL_EDGES_LIMIT,
+            "Set the maximum number of paralell edges",
+            JOptionPane.INFORMATION_MESSAGE,
+            null,
+            null,
+            SettingsManager.instance().getGraphParalellEdgesLimit());
+        // Null means Cancel has been pressed
+        if (result != null)
+        {
+            try
+            {
+                SettingsManager.instance().setGraphParalellEdgesLimit(Integer.parseInt(result));
+            }
+            catch (NumberFormatException ex)
+            {
+                JOptionPane.showMessageDialog(
+                    null,
+                    "\"" + result + "\"" + " is not a valid paralell edges limit." +
+                    " Using default value of " +
+                    SettingsManager.DEFAULT_GRAPH_PARALELL_EDGES_LIMIT + " instead.",
+                    "Invalid value.",
+                    JOptionPane.ERROR_MESSAGE); 
+                SettingsManager.instance().setGraphParalellEdgesLimit(
+                    SettingsManager.DEFAULT_GRAPH_PARALELL_EDGES_LIMIT);
+            }
+        }
+        updateStatusBar();
+    }//GEN-LAST:event_paralellEdgesLimitMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -705,10 +753,12 @@ public class MainFrame extends javax.swing.JFrame
     private javax.swing.JRadioButtonMenuItem BFSRadioButtonMenuItem;
     private javax.swing.JRadioButtonMenuItem DFSRadioButtonMenuItem;
     private javax.swing.ButtonGroup algorithmTypeButtonGroup;
+    private javax.swing.JMenuItem animationDelayMenuItem;
     private javax.swing.JRadioButtonMenuItem circleLayoutRadioButtonMenuItem;
     private javax.swing.JRadioButtonMenuItem directedRadioButtonMenuItem;
     private javax.swing.JRadioButtonMenuItem edgeBFSRadioButtomMenuItem;
     private javax.swing.JRadioButtonMenuItem edgeDFSRadioButtomMenuItem;
+    private javax.swing.JMenuItem edgeProbabilityMenuItem;
     private javax.swing.JMenu explorationAlgorithmMenu;
     private javax.swing.JRadioButtonMenuItem frLayoutRadioButtonMenuItem;
     private javax.swing.ButtonGroup graphLayoutButtonGroup;
@@ -717,7 +767,6 @@ public class MainFrame extends javax.swing.JFrame
     private javax.swing.ButtonGroup graphTypeButtonGroup;
     private javax.swing.JMenu graphTypeMenu;
     private javax.swing.JRadioButtonMenuItem isomLayoutRadioButtonMenuItem;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
@@ -726,12 +775,11 @@ public class MainFrame extends javax.swing.JFrame
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JRadioButtonMenuItem mixedRadioButtonMenuItem;
     private javax.swing.JMenuItem newGraphMenuItem;
+    private javax.swing.JMenuItem numberOfVerticesMenuItem;
     private javax.swing.JPanel panel;
+    private javax.swing.JMenuItem paralellEdgesLimitMenuItem;
     private javax.swing.JButton pauseButton;
     private javax.swing.JMenuItem resetToDefaultsMenuItem;
-    private javax.swing.JMenuItem setAnimationDelayMenuItem;
-    private javax.swing.JMenuItem setEdgeProbabilityMenuItem;
-    private javax.swing.JMenuItem setNumberOfVerticesMenuItem;
     private javax.swing.JMenu settingsMenu;
     private javax.swing.JRadioButtonMenuItem springLayoutRadioButtonMenuItem;
     private javax.swing.JButton startButton;
@@ -739,5 +787,6 @@ public class MainFrame extends javax.swing.JFrame
     private javax.swing.JButton stopButton;
     private javax.swing.JToolBar toolBar;
     private javax.swing.JRadioButtonMenuItem undirectedRadioButtonMenuItem;
+    private javax.swing.JCheckBoxMenuItem weightedGraphCheckBoxMenuItem;
     // End of variables declaration//GEN-END:variables
 }

@@ -4,100 +4,6 @@ import java.util.prefs.Preferences;
 
 public class SettingsManager
 {
-    public enum ExplorationAlgorithm
-    {
-        DFS, BFS, EDGE_DFS, EDGE_BFS;
-        
-        @Override
-        public String toString()
-        {
-            String friendlyName;
-            switch (this)
-            {
-                default:
-                case DFS:
-                    friendlyName = "Depth First Search";
-                    break;
-                    
-                case BFS:
-                    friendlyName = "Breadth First Search";
-                    break;
-                    
-                case EDGE_DFS:
-                    friendlyName = "Edge Depth First Search";
-                    break;
-                    
-                case EDGE_BFS:
-                    friendlyName = "Edge Breadth First Search";
-                    break;
-            }
-            return friendlyName;
-        }
-    }
-    
-    public enum GraphType
-    {
-        DIRECTED, UNDIRECTED, MIXED;
-        
-        @Override
-        public String toString()
-        {
-            String friendlyName;
-            switch (this)
-            {
-                default:
-                case DIRECTED:
-                    friendlyName = "Directed";
-                    break;
-                    
-                case UNDIRECTED:
-                    friendlyName = "Undirected";
-                    break;
-                    
-                case MIXED:
-                    friendlyName = "Mixed";
-                    break;
-            }
-            return friendlyName;
-        }
-    }
-    
-    public enum GraphLayout
-    {
-        // TODO check out other layouts which need additional settings
-        CIRCLE, FR, ISOM, KK, SPRING;
-        
-        @Override
-        public String toString()
-        {
-            String friendlyName;
-            switch (this)
-            {
-                default:
-                case CIRCLE:
-                    friendlyName = "Circle";
-                    break;
-                    
-                case FR:
-                    friendlyName = "FR";
-                    break;
-                    
-                case ISOM:
-                    friendlyName = "ISOM";
-                    break;
-                    
-                case KK:
-                    friendlyName = "KK";
-                    break;
-                    
-                case SPRING:
-                    friendlyName = "Spring";
-                    break;
-            }
-            return friendlyName;
-        }
-    }
-    
     public static final int MIN_ANIMATION_DELAY_MS = 0;
     public static final int MAX_ANIMATION_DELAY_MS = 10000;
     public  static final int DEFAULT_ANIMATION_DELAY_MS = 1000;
@@ -105,19 +11,23 @@ public class SettingsManager
     private static final GraphType DEFAULT_GRAPH_TYPE = GraphType.DIRECTED;
     private static final boolean DEFAULT_GRAPH_IS_WEIGTHED = false;
     private static final GraphLayout DEFAULT_GRAPH_LAYOUT = GraphLayout.CIRCLE;
-    public static final double MIN_EDGE_PROBABILITY = 0.0;
-    public static final double MAX_EDGE_PROBABILITY = 1.0;
-    public static final double DEFAULT_EDGE_PROBABILITY = 0.5;
-    public static final int MIN_NUMBER_OF_VERTICES = 1;
-    public static final int MAX_NUMBER_OF_VERTICES = 1000;
-    public static final int DEFAULT_NUMBER_OF_VERTICES = 10;
+    public static final double MIN_GRAPH_EDGE_PROBABILITY = 0.0;
+    public static final double MAX_GRAPH_EDGE_PROBABILITY = 1.0;
+    public static final double DEFAULT_GRAPH_EDGE_PROBABILITY = 0.5;
+    public static final int MIN_GRAPH_NUMBER_OF_VERTICES = 1;
+    public static final int MAX_GRAPH_NUMBER_OF_VERTICES = 100;
+    public static final int DEFAULT_GRAPH_NUMBER_OF_VERTICES = 10;
+    public static final int MIN_GRAPH_PARALELL_EDGES_LIMIT = 1;
+    public static final int MAX_GRAPH_PARALELL_EDGES_LIMIT = 10;
+    public static final int DEFAULT_GRAPH_PARALELL_EDGES_LIMIT = 1;
     private static final String KEY_ANIMATION_DELAY_MS = "animation_delay_ms";
     private static final String KEY_EXPLORATION_ALGORITHM = "exploration_algorithm";
     private static final String KEY_GRAPH_TYPE = "graph_type";
     private static final String KEY_GRAPH_IS_WEIGHTED = "graph_is_weighted";
     private static final String KEY_GRAPH_LAYOUT = "graph_layout";
-    private static final String KEY_EDGE_PROBABILITY = "edge_probability";
-    private static final String KEY_NUMBER_OF_VERTICES = "number_of_vertices";
+    private static final String KEY_GRAPH_EDGE_PROBABILITY = "graph_edge_probability";
+    private static final String KEY_GRAPH_NUMBER_OF_VERTICES = "graph_number_of_vertices";
+    private static final String KEY_GRAPH_PARALELL_EDGES_LIMIT = "graph_paralell_edges_limit";
     // Instance needs to be set as the last static member
     private static final SettingsManager instance = new SettingsManager();
     private Preferences preferences;
@@ -126,28 +36,24 @@ public class SettingsManager
     private GraphType graphType;
     private boolean graphIsWeighted;
     private GraphLayout graphLayout;
-    private double edgeProbability;
-    private int numberOfVertices;
+    private double graphEdgeProbability;
+    private int graphNumberOfVertices;
+    private int graphParalellEdgesLimit;
 
     private SettingsManager()
     {
         try 
         {
-            this.preferences = Preferences.userRoot().node(this.getClass().getName());
-            this.animationDelayMs = this.preferences.getInt(
-                KEY_ANIMATION_DELAY_MS, DEFAULT_ANIMATION_DELAY_MS);
-            this.explorationAlgorithm = ExplorationAlgorithm.valueOf(
-                this.preferences.get(KEY_EXPLORATION_ALGORITHM, DEFAULT_EXPLORATION_ALGORITHM.name()));
-            this.graphType = GraphType.valueOf(
-                this.preferences.get(KEY_GRAPH_TYPE, DEFAULT_GRAPH_TYPE.name()));
-            this.graphIsWeighted = this.preferences.getBoolean(
-                KEY_GRAPH_IS_WEIGHTED, DEFAULT_GRAPH_IS_WEIGTHED);
-            this.graphLayout = GraphLayout.valueOf(
-                this.preferences.get(KEY_GRAPH_LAYOUT, DEFAULT_GRAPH_LAYOUT.name()));
-            this.edgeProbability = this.preferences.getDouble(
-                KEY_EDGE_PROBABILITY, DEFAULT_EDGE_PROBABILITY);
-            this.numberOfVertices = this.preferences.getInt(
-                KEY_NUMBER_OF_VERTICES, DEFAULT_NUMBER_OF_VERTICES);
+            preferences = Preferences.userRoot().node(getClass().getName());
+            animationDelayMs = preferences.getInt(KEY_ANIMATION_DELAY_MS, DEFAULT_ANIMATION_DELAY_MS);
+            explorationAlgorithm = ExplorationAlgorithm.valueOf(
+                preferences.get(KEY_EXPLORATION_ALGORITHM, DEFAULT_EXPLORATION_ALGORITHM.name()));
+            graphType = GraphType.valueOf(preferences.get(KEY_GRAPH_TYPE, DEFAULT_GRAPH_TYPE.name()));
+            graphIsWeighted = preferences.getBoolean(KEY_GRAPH_IS_WEIGHTED, DEFAULT_GRAPH_IS_WEIGTHED);
+            graphLayout = GraphLayout.valueOf(preferences.get(KEY_GRAPH_LAYOUT, DEFAULT_GRAPH_LAYOUT.name()));
+            graphEdgeProbability = preferences.getDouble(KEY_GRAPH_EDGE_PROBABILITY, DEFAULT_GRAPH_EDGE_PROBABILITY);
+            graphNumberOfVertices = preferences.getInt(KEY_GRAPH_NUMBER_OF_VERTICES, DEFAULT_GRAPH_NUMBER_OF_VERTICES);
+            graphParalellEdgesLimit = preferences.getInt(KEY_GRAPH_PARALELL_EDGES_LIMIT, DEFAULT_GRAPH_PARALELL_EDGES_LIMIT);
         }
         catch (Exception ex)
         {
@@ -179,7 +85,7 @@ public class SettingsManager
 
             try 
             {
-                this.preferences.putInt(KEY_ANIMATION_DELAY_MS, this.animationDelayMs);
+                preferences.putInt(KEY_ANIMATION_DELAY_MS, this.animationDelayMs);
             }
             catch (Exception ex)
             {
@@ -190,7 +96,7 @@ public class SettingsManager
     
     public int getAnimationDelayMs()
     {
-        return this.animationDelayMs;
+        return animationDelayMs;
     }
     
     public void setExplorationAlgorithm(ExplorationAlgorithm explorationAlgorithm)
@@ -201,7 +107,7 @@ public class SettingsManager
     
             try
             {
-                this.preferences.put(KEY_EXPLORATION_ALGORITHM, this.explorationAlgorithm.name());
+                preferences.put(KEY_EXPLORATION_ALGORITHM, this.explorationAlgorithm.name());
             }
             catch (Exception ex)
             {
@@ -212,18 +118,18 @@ public class SettingsManager
     
     public ExplorationAlgorithm getExplorationAlgorithm()
     {
-        return this.explorationAlgorithm;
+        return explorationAlgorithm;
     }
 
-    public void setGraphType(GraphType graph_type)
+    public void setGraphType(GraphType graphType)
     {
-        if (this.graphType != graph_type)
+        if (this.graphType != graphType)
         {
-            this.graphType = graph_type;
+            this.graphType = graphType;
     
             try
             {
-                this.preferences.put(KEY_GRAPH_TYPE, this.graphType.name());
+                preferences.put(KEY_GRAPH_TYPE, this.graphType.name());
             }
             catch (Exception ex)
             {
@@ -234,7 +140,7 @@ public class SettingsManager
 
     public GraphType getGraphType()
     {
-        return this.graphType;
+        return graphType;
     }
     
     public void setGraphIsWeighted(boolean graphIsWeighted)
@@ -245,7 +151,7 @@ public class SettingsManager
     
             try
             {
-                this.preferences.putBoolean(KEY_GRAPH_IS_WEIGHTED, this.graphIsWeighted);
+                preferences.putBoolean(KEY_GRAPH_IS_WEIGHTED, this.graphIsWeighted);
             }
             catch (Exception ex)
             {
@@ -256,7 +162,7 @@ public class SettingsManager
     
     public boolean getGraphIsWeighted()
     {
-        return this.graphIsWeighted;
+        return graphIsWeighted;
     }
     
     public void setGraphLayout(GraphLayout graphLayout)
@@ -267,7 +173,7 @@ public class SettingsManager
     
             try
             {
-                this.preferences.put(KEY_GRAPH_LAYOUT, this.graphLayout.name());
+                preferences.put(KEY_GRAPH_LAYOUT, this.graphLayout.name());
             }
             catch (Exception ex)
             {
@@ -278,29 +184,29 @@ public class SettingsManager
     
     public GraphLayout getGraphLayout()
     {
-        return this.graphLayout;
+        return graphLayout;
     }
     
-    public void setEdgeProbability(double edgeProbability)
+    public void setGraphEdgeProbability(double graphEdgeProbability)
     {
-        if (this.edgeProbability != edgeProbability)
+        if (this.graphEdgeProbability != graphEdgeProbability)
         {
-            if (edgeProbability < MIN_EDGE_PROBABILITY)
+            if (this.graphEdgeProbability < MIN_GRAPH_EDGE_PROBABILITY)
             {
-                this.edgeProbability = MIN_EDGE_PROBABILITY;
+                this.graphEdgeProbability = MIN_GRAPH_EDGE_PROBABILITY;
             }
-            else if (edgeProbability > MAX_EDGE_PROBABILITY)
+            else if (this.graphEdgeProbability > MAX_GRAPH_EDGE_PROBABILITY)
             {
-                this.edgeProbability = MAX_EDGE_PROBABILITY;
+                this.graphEdgeProbability = MAX_GRAPH_EDGE_PROBABILITY;
             }
             else
             {
-                this.edgeProbability = edgeProbability;
+                this.graphEdgeProbability = graphEdgeProbability;
             }
 
             try 
             {
-                this.preferences.putDouble(KEY_EDGE_PROBABILITY, this.edgeProbability);
+                preferences.putDouble(KEY_GRAPH_EDGE_PROBABILITY, this.graphEdgeProbability);
             }
             catch (Exception ex)
             {
@@ -309,31 +215,31 @@ public class SettingsManager
         }
     }
     
-    public double getEdgeProbability()
+    public double getGraphEdgeProbability()
     {
-        return this.edgeProbability;
+        return graphEdgeProbability;
     }
     
-    public void setNumberOfVertices(int numberOfVertices)
+    public void setGraphNumberOfVertices(int graphNumberOfVertices)
     {
-        if (this.numberOfVertices != numberOfVertices)
+        if (this.graphNumberOfVertices != graphNumberOfVertices)
         {
-            if (numberOfVertices < MIN_NUMBER_OF_VERTICES)
+            if (this.graphNumberOfVertices < MIN_GRAPH_NUMBER_OF_VERTICES)
             {
-                this.numberOfVertices = MIN_NUMBER_OF_VERTICES;
+                this.graphNumberOfVertices = MIN_GRAPH_NUMBER_OF_VERTICES;
             }
-            else if (numberOfVertices > MAX_NUMBER_OF_VERTICES)
+            else if (this.graphNumberOfVertices > MAX_GRAPH_NUMBER_OF_VERTICES)
             {
-                this.numberOfVertices = MAX_NUMBER_OF_VERTICES;
+                this.graphNumberOfVertices = MAX_GRAPH_NUMBER_OF_VERTICES;
             }
             else
             {
-                this.numberOfVertices = numberOfVertices;
+                this.graphNumberOfVertices = graphNumberOfVertices;
             }
 
             try 
             {
-                this.preferences.putInt(KEY_NUMBER_OF_VERTICES, this.numberOfVertices);
+                preferences.putInt(KEY_GRAPH_NUMBER_OF_VERTICES, this.graphNumberOfVertices);
             }
             catch (Exception ex)
             {
@@ -342,19 +248,53 @@ public class SettingsManager
         }
     }
     
-    public int getNumberOfVertices()
+    public int getGraphNumberOfVertices()
     {
-        return this.numberOfVertices;
+        return graphNumberOfVertices;
+    }
+    
+    public void setGraphParalellEdgesLimit(int graphParalellEdgesLimit)
+    {
+        if (this.graphParalellEdgesLimit != graphParalellEdgesLimit)
+        {
+            if (this.graphParalellEdgesLimit < MIN_GRAPH_NUMBER_OF_VERTICES)
+            {
+                this.graphParalellEdgesLimit = MIN_GRAPH_NUMBER_OF_VERTICES;
+            }
+            else if (this.graphParalellEdgesLimit > MAX_GRAPH_NUMBER_OF_VERTICES)
+            {
+                this.graphParalellEdgesLimit = MAX_GRAPH_NUMBER_OF_VERTICES;
+            }
+            else
+            {
+                this.graphParalellEdgesLimit = graphParalellEdgesLimit;
+            }
+
+            try 
+            {
+                preferences.putInt(KEY_GRAPH_PARALELL_EDGES_LIMIT, this.graphParalellEdgesLimit);
+            }
+            catch (Exception ex)
+            {
+                // TODO
+            }
+        }
+    }
+    
+    public int getGraphParalellEdgesLimit()
+    {
+        return graphParalellEdgesLimit;
     }
     
     public final void resetAll()
     {
-        this.setAnimationDelayMs(DEFAULT_ANIMATION_DELAY_MS);
-        this.setExplorationAlgorithm(DEFAULT_EXPLORATION_ALGORITHM);
-        this.setGraphType(DEFAULT_GRAPH_TYPE);
-        this.setGraphIsWeighted(DEFAULT_GRAPH_IS_WEIGTHED);
-        this.setGraphLayout(DEFAULT_GRAPH_LAYOUT);
-        this.setEdgeProbability(DEFAULT_EDGE_PROBABILITY);
-        this.setNumberOfVertices(DEFAULT_NUMBER_OF_VERTICES);
+        setAnimationDelayMs(DEFAULT_ANIMATION_DELAY_MS);
+        setExplorationAlgorithm(DEFAULT_EXPLORATION_ALGORITHM);
+        setGraphType(DEFAULT_GRAPH_TYPE);
+        setGraphIsWeighted(DEFAULT_GRAPH_IS_WEIGTHED);
+        setGraphLayout(DEFAULT_GRAPH_LAYOUT);
+        setGraphEdgeProbability(DEFAULT_GRAPH_EDGE_PROBABILITY);
+        setGraphNumberOfVertices(DEFAULT_GRAPH_NUMBER_OF_VERTICES);
+        setGraphParalellEdgesLimit(DEFAULT_GRAPH_PARALELL_EDGES_LIMIT);
     }
 }

@@ -27,7 +27,7 @@ public class GraphGenerator
                 graph = new SparseMultigraph<>();
                 break;
         }
-        for (int i = 0; i < SettingsManager.instance().getNumberOfVertices(); ++i)
+        for (int i = 0; i < SettingsManager.instance().getGraphNumberOfVertices(); ++i)
         {
             Character c = new Character((char)('A' + i));
             graph.addVertex(new Vertex(c.toString()));
@@ -38,34 +38,36 @@ public class GraphGenerator
         {
             for (Vertex stop: graph.getVertices())
             {
-                if (random.nextDouble() < SettingsManager.instance().getEdgeProbability())
+                for (int i = 0; i < SettingsManager.instance().getGraphParalellEdgesLimit(); ++i)
                 {
-                    Integer i = new Integer(edgeCouter);
-                    EdgeType edgeType;
-                    
-                    switch(SettingsManager.instance().getGraphType())
+                    if (random.nextDouble() < SettingsManager.instance().getGraphEdgeProbability())
                     {
-                        default:
-                        case DIRECTED:
-                            edgeType = EdgeType.DIRECTED;
-                            break;
-                        
-                        case UNDIRECTED:
-                            edgeType = EdgeType.UNDIRECTED;
-                            break;
-
-                        case MIXED:
-                            if (random.nextBoolean())
-                            {
+                        EdgeType edgeType;
+                        switch(SettingsManager.instance().getGraphType())
+                        {
+                            default:
+                            case DIRECTED:
                                 edgeType = EdgeType.DIRECTED;
-                            }
-                            else
-                            {
+                                break;
+
+                            case UNDIRECTED:
                                 edgeType = EdgeType.UNDIRECTED;
-                            }
-                            break;
+                                break;
+
+                            case MIXED:
+                                if (random.nextBoolean())
+                                {
+                                    edgeType = EdgeType.DIRECTED;
+                                }
+                                else
+                                {
+                                    edgeType = EdgeType.UNDIRECTED;
+                                }
+                                break;
+                        }
+                        ++edgeCouter;
+                        graph.addEdge(new Edge(Integer.toString(edgeCouter)), start, stop, edgeType);
                     }
-                    graph.addEdge(new Edge(i.toString()), start, stop, edgeType);
                 }
             }
         }

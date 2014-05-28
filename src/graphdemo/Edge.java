@@ -14,18 +14,18 @@ public class Edge extends GraphElement
     public Edge(String name)
     {
         super(name);
-        this.weight = DEFAULT_WEIGHT;
+        weight = DEFAULT_WEIGHT;
     }
     
     public Edge(Edge copyFrom)
     {
         super(copyFrom);
-        this.weight = copyFrom.weight;
+        weight = copyFrom.weight;
     }
     
     @Override
     public String toString()
     {
-        return this.name + " " + this.weight;
+        return name + " " + weight;
     }
 }

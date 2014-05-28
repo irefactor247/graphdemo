@@ -72,12 +72,12 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator3">
                 </MenuItem>
-                <MenuItem class="javax.swing.JCheckBoxMenuItem" name="jCheckBoxMenuItem1">
+                <MenuItem class="javax.swing.JCheckBoxMenuItem" name="weightedGraphCheckBoxMenuItem">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Weighted"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBoxMenuItem1ActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="weightedGraphCheckBoxMenuItemActionPerformed"/>
                   </Events>
                 </MenuItem>
               </SubComponents>
@@ -145,20 +145,28 @@
                 </MenuItem>
               </SubComponents>
             </Menu>
-            <MenuItem class="javax.swing.JMenuItem" name="setNumberOfVerticesMenuItem">
+            <MenuItem class="javax.swing.JMenuItem" name="numberOfVerticesMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Set number of vertices"/>
+                <Property name="text" type="java.lang.String" value="Number of vertices"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="setNumberOfVerticesMenuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="numberOfVerticesMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="setEdgeProbabilityMenuItem">
+            <MenuItem class="javax.swing.JMenuItem" name="edgeProbabilityMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Set edge probability"/>
+                <Property name="text" type="java.lang.String" value="Edge probability"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="setEdgeProbabilityMenuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="edgeProbabilityMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="paralellEdgesLimitMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Paralell edges limit"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="paralellEdgesLimitMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator4">
@@ -217,12 +225,12 @@
             </Menu>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="setAnimationDelayMenuItem">
+            <MenuItem class="javax.swing.JMenuItem" name="animationDelayMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Set animation delay"/>
+                <Property name="text" type="java.lang.String" value="Animation delay"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="setAnimationDelayMenuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="animationDelayMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">

@@ -10,12 +10,18 @@ public class GraphElement
     public GraphElement(String name)
     {
         this.name = name;
-        this.uuid = UUID.randomUUID();
+        uuid = UUID.randomUUID();
     }
     
     public GraphElement(GraphElement copyFrom)
     {
-        this.name = copyFrom.name;
-        this.uuid = copyFrom.uuid;
+        name = copyFrom.name;
+        uuid = copyFrom.uuid;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return name;
     }
 }
